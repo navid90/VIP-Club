@@ -45,12 +45,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => 'Customer-<b>CLUB</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => 'customer-club',
 
     /*
     |--------------------------------------------------------------------------
@@ -242,27 +242,33 @@ return [
             'text' => 'search',
         ],
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'text' => 'users',
+            'url'  => 'user',
+            'icon' => 'far fa-fw fa-user',
+//            'can'  => 'manage-blog',
         ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
+//        [
+//            'text'        => 'pages',
+//            'url'         => 'admin/pages',
+//            'icon'        => 'far fa-fw fa-file',
+//            'label'       => 4,
+//            'label_color' => 'success',
+//        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url'  => 'home',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'url'  => '/password/reset',
             'icon' => 'fas fa-fw fa-lock',
+        ],
+        [
+            'text' => 'logout',
+            'url'  => 'logout',
+            'icon' => 'fas fa-fw fa-key',
         ],
         [
             'text'    => 'multilevel',
@@ -356,7 +362,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

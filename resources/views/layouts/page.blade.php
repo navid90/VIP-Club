@@ -2,13 +2,13 @@
 
 @section('title', 'Dashboard')
 
-
 @section('adminlte_css')
 
 @endsection
 
 
 @section('content')
+
     @if( \Illuminate\Support\Facades\Session::has('success') )
         <div class="alert alert-primary" role="alert">
             {{ request()->session()->get('success') }}

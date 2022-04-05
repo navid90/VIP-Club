@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use phpDocumentor\Reflection\Types\This;
 
 class User extends Authenticatable
 {
@@ -17,10 +18,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+    protected $guarded = [
+        'id',
     ];
 
     /**
@@ -41,4 +40,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected function getFullNameAttribute()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
+
+    protected function getActivationInLetterAttribute()
+    {
+         if ($this->activation) return 'Active';
+         else return 'Inactive';
+    }
+
+    protected function getUserTypeInLetterAttribute()
+    {
+        if ($this->user_type) return 'Admin';
+        else return 'Customer';
+    }
+
 }
