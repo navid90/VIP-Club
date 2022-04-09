@@ -180,6 +180,8 @@ return [
 
         AdminLteServiceProvider::class,
 
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
     ],
 
     /*
@@ -194,7 +196,12 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // ...
+        // ...,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+
     ])->toArray(),
 
 ];
+
+
+
