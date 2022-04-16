@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use phpDocumentor\Reflection\DocBlock\Tags\Uses;
+use Yajra\DataTables\DataTablesServiceProvider;
 use App\Datatables\UserDatatable;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -16,16 +18,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(\Yajra\DataTables\Utilities\Request $request)
     {
-//        $datatable = new UserDatatable();
-//        return $datatable->render('users.index');
-
-
-
-        $users= User::all();
-
-        return view('user.index',compact('users'));
+//        dd(User::all());
+        $datatable = new UserDatatable();
+        return $datatable->render('user.index');
     }
 
     /**

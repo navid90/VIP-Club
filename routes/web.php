@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\DatatablesController;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +27,8 @@ Route::resources([
     'home' => HomeController::class,
     'user' => UserController::class,
 ]);
+Route::get('user-simple',function (){
+    $users=User::all();
+    return view('user.index',compact('users'));
+});
 
-
-
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
