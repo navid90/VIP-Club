@@ -137,6 +137,7 @@ return [
     |
     */
 
+
     'providers' => [
 
         /*
@@ -165,6 +166,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
@@ -180,8 +182,8 @@ return [
 
         AdminLteServiceProvider::class,
 
-//        oracle\src\DataTablesServiceProvider::class,
 
+        Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
     ],
 
     /*
@@ -198,7 +200,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // ...,
         'DataTables' => oracle\src\Facades\DataTables::class,
-
+        'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class
     ])->toArray(),
 
 ];

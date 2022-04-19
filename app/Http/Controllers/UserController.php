@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Kris\LaravelFormBuilder\FormBuilder;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use Yajra\DataTables\DataTablesServiceProvider;
 use App\Datatables\UserDatatable;
@@ -30,9 +31,17 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(FormBuilder $formBuilder)
     {
-        return view('user.create');
+        $form = $formBuilder->create(\App\Forms\UserForm::class, [
+            'method' => 'POST',
+            'url' => route('user.store'),
+        ]);
+
+        return view('user.create', compact('form'));
+
+
+//        return view('user.create');
     }
 
     /**
@@ -49,16 +58,15 @@ class UserController extends Controller
                 ->letters()->mixedCase()->numbers()->symbols()
             ],
         ]);
-
         User::create([
-            'email'              => $request->email,
-            'mobile'             => $request->mobile,
-            'password'           => Hash::make($request->password),
-            'national_code'      => $request->national_code,
             'first_name'         => $request->first_name,
             'last_name'          => $request->last_name,
+            'email'              => $request->email,
+            'mobile'             => $request->mobile,
+            'national_code'      => $request->national_code,
+            'password'           => Hash::make($request->password),
             'slug'               => $request->slug,
-            'profile_photo_path' => 'profile_photo_path',
+            'profile_photo_path' => 'profile_photo',
             'activation'         => $request->activation,
             'user_type'          => $request->user_type,
         ]);
