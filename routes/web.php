@@ -29,6 +29,6 @@ Route::resources([
 ]);
 Route::get('user-simple',function (){
     $users=User::all();
-    return view('user.index',compact('users'));
+    return view('user.index-simple',compact('users'));
 });
 

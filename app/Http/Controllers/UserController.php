@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Schemas\UserSchema;
 use Kris\LaravelFormBuilder\FormBuilder;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use Yajra\DataTables\DataTablesServiceProvider;
@@ -11,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Yajra\DataTables\DataTables;
+use function PHPUnit\Framework\stringContains;
+use App\Http\Forms\UserForm;
 
 class UserController extends Controller
 {
@@ -21,9 +24,9 @@ class UserController extends Controller
      */
     public function index(\Yajra\DataTables\Utilities\Request $request)
     {
-//        dd(User::all());
         $datatable = new UserDatatable();
-        return $datatable->render('user.index');
+        $users = User::all();
+        return $datatable->render('user.index',$users);
     }
 
     /**
@@ -33,15 +36,15 @@ class UserController extends Controller
      */
     public function create(FormBuilder $formBuilder)
     {
-        $form = $formBuilder->create(\App\Forms\UserForm::class, [
-            'method' => 'POST',
-            'url' => route('user.store'),
-        ]);
+        $form = $formBuilder->create(UserForm::class,
+            [
+                'method' => 'POST',
+                'url' => route('user.store'),
+            ]
+        );
 
         return view('user.create', compact('form'));
 
-
-//        return view('user.create');
     }
 
     /**

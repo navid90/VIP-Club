@@ -13,7 +13,6 @@
     </ol>
   </nav>
 
-
   <section class="row">
     <section class="col-10 offset-1">
         <section class="main-body-container">
@@ -29,7 +28,7 @@
                         <div class="ibox-content">
                             <div class="table-responsive">
 
-{{--                                <a class="btn btn-success pull-right btn-xs" href="?action=excel" style="margin-left:5px;"><i class="fa fa-file-excel-o"></i> {{ trans('letter.excel') }} </a>--}}
+                                <a class="btn btn-success pull-right btn-xs" href="?action=excel" style="margin-left:5px;"><i class="fa fa-file-excel-o"></i> {{ trans('letter.excel') }} </a>
 
                                 {{ $dataTable->table() }}
                                 <table class="dataTableBuilder" id="dataTableBuilder - Ajax"></table>
