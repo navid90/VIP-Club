@@ -52,20 +52,22 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         @foreach($users as $user)
                             <tr>
-                                <th> {{ $user -> id }} </th>
-                                <td> {{ $user -> full_name }} </td>
-                                <td> {{ $user -> email }} </td>
-                                <td> {{ $user -> mobile }} </td>
-                                <td> {{ $user -> national_code }} </td>
-                                <td> {{ $user -> user_type_in_letter }} </td>
-                                <td> {{ $user -> activation_in_letter }} </td>
+<!--                                --><?php //dd($user) ?>
+                                <th> {{ $user -> id  }} </th>
+                                <td> {{ $user -> data}} </td>
+{{--                                <td> {{ $user ['data']['email'] }} </td>--}}
+{{--                                <td> {{ $user ['data']['mobile'] }} </td>--}}
+{{--                                <td> {{ $user ['data']['national_code'] }} </td>--}}
+{{--                                <td> {{ $user ['user_type_in_letter'] }} </td>--}}
+{{--                                <td> {{ $user ['activation_in_letter'] }} </td>--}}
                                 <td class="width-22-rem text-left">
 
                                     <a href="{{ route( 'user.edit' , $user -> id ) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> {{ trans('letter.edit') }} </a>
 
-                                    <form class="d-inline" id="destroy_user_form" action="{{ route( 'user.destroy' , $user -> id ) }}" enctype="multipart/form-data" method="post">
+                                    <form class="d-inline" id="destroy_user_form" action="{{ route( 'user.destroy' ,$user -> id ) }}" enctype="multipart/form-data" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <input type="submit" value="{{ trans('recycle') }}" class="btn btn-danger btn-sm">

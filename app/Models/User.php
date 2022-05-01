@@ -48,13 +48,13 @@ class User extends Authenticatable
 
     protected function getActivationInLetterAttribute()
     {
-         if ($this->activation) return 'Active';
+         if ($this ['data']['activation']) return 'Active';
          else return 'Inactive';
     }
 
     protected function getUserTypeInLetterAttribute()
     {
-        if ($this->user_type) return 'Admin';
+        if ($this['data']['user_type']) return 'Admin';
         else return 'Customer';
     }
 

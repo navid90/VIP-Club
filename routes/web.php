@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\DatatablesController;
 use App\Models\User;
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +30,5 @@ Route::resources([
 Route::get('user-simple',function (){
     $users=User::all();
     return view('user.index-simple',compact('users'));
-});
+})->name('user.index-simple');
 

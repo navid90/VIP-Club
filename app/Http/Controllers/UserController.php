@@ -12,8 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Yajra\DataTables\DataTables;
+use function MongoDB\BSON\toJSON;
+use function PHPUnit\Framework\assertJson;
 use function PHPUnit\Framework\stringContains;
 use App\Http\Forms\UserForm;
+use function Spatie\Ignition\Config\toArray;
 
 class UserController extends Controller
 {
@@ -26,6 +29,7 @@ class UserController extends Controller
     {
         $datatable = new UserDatatable();
         $users = User::all();
+
         return $datatable->render('user.index',$users);
     }
 
@@ -55,26 +59,18 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $request->validate([
-            'email'         => ['unique:users',],
-            'password'      => ['string', 'required','min:8', 'confirmed', Password::min(8)
-                ->letters()->mixedCase()->numbers()->symbols()
-            ],
-        ]);
-        User::create([
-            'first_name'         => $request->first_name,
-            'last_name'          => $request->last_name,
-            'email'              => $request->email,
-            'mobile'             => $request->mobile,
-            'national_code'      => $request->national_code,
-            'password'           => Hash::make($request->password),
-            'slug'               => $request->slug,
-            'profile_photo_path' => 'profile_photo',
-            'activation'         => $request->activation,
-            'user_type'          => $request->user_type,
-        ]);
+//        $request->validate([
+//            'email'         => ['unique:users',],
+//        ]);
 
-        return redirect()->route( 'user.index');
+        $data= $request->all();
+//        $data['password'] = Hash::make($data['password']);
+//        unset($data['password_confirmation']);
+        $user = new User();
+        $user['data'] = json_encode($data);
+        $user->save();
+
+        return redirect()->route( 'user.index-simple');
     }
 
     /**
@@ -94,11 +90,28 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(FormBuilder $formBuilder ,$id)
     {
-        $user = User::find($id);
+        $result = IndustryType::findOrFail($id);
+        $form = $formBuilder->create('employment_bank\\Forms\\IndustryTypeForm', ['method' => 'PUT', 'model' => $result, 'url' => route($this->route . 'update', $id)])->remove('save');
+        //->setData('market_values', $markets);
+        return view($this->content . 'edit', compact('form'));
 
-        return view('user.edit', compact('user'));
+//        $form = $formBuilder->create(UserForm::class,
+//            [
+//                'method' => 'PUT',
+//                'url' => route('user.store',$id),
+//            ]
+//
+//        );
+//
+//        return view('user.edit', compact('form'));
+
+
+
+//        $user = User::find($id);
+//
+//        return view('user.edit', compact('user'));
     }
 
     /**
