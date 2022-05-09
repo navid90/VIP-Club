@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Yajra\DataTables\DataTables;
-use function MongoDB\BSON\toJSON;
 use function PHPUnit\Framework\assertJson;
 use function PHPUnit\Framework\stringContains;
 use App\Http\Forms\UserForm;
@@ -29,7 +28,6 @@ class UserController extends Controller
     {
         $datatable = new UserDatatable();
         $users = User::all();
-
         return $datatable->render('user.index',$users);
     }
 
@@ -64,12 +62,11 @@ class UserController extends Controller
 //        ]);
 
         $data= $request->all();
-//        $data['password'] = Hash::make($data['password']);
-//        unset($data['password_confirmation']);
+        $data['password'] = Hash::make($data['password']);
+        unset($data['password_confirmation']);
         $user = new User();
-        $user['data'] = json_encode($data);
+        $user['data'] = $data;
         $user->save();
-
         return redirect()->route( 'user.index-simple');
     }
 

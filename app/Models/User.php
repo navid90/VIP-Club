@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Http\Schemas\UserSchema;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use phpDocumentor\Reflection\Types\This;
+use Psy\Util\Json;
 
 class User extends Authenticatable
 {
@@ -39,22 +41,23 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'data' => 'json',
     ];
 
     protected function getFullNameAttribute()
     {
-        return $this->first_name.' '.$this->last_name;
+        return (key_exists('first_name',$this -> data) ? $this -> data ['first_name']: null).' '.(key_exists('last_name',$this -> data) ? $this -> data ['last_name']: null);
     }
 
     protected function getActivationInLetterAttribute()
     {
-         if ($this ['data']['activation']) return 'Active';
+         if (key_exists('activation',$this -> data)) return 'Active';
          else return 'Inactive';
     }
 
     protected function getUserTypeInLetterAttribute()
     {
-        if ($this['data']['user_type']) return 'Admin';
+        if (key_exists('user_type',$this -> data)) return 'Admin';
         else return 'Customer';
     }
 

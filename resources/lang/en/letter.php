@@ -30,6 +30,7 @@ return [
     'active'                    => 'Active' ,
     'inactive'                  => 'Inactive' ,
     'user_type'                 => 'Type of User' ,
+    'age'                       => 'Age',
     'customer'                  => 'Customer' ,
     'admin'                     => 'Admin' ,
     'configuration'             => 'Configuration' ,

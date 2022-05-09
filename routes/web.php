@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Http\Schemas\UserSchema;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,8 +28,12 @@ Route::resources([
     'home' => HomeController::class,
     'user' => UserController::class,
 ]);
+
 Route::get('user-simple',function (){
+
     $users=User::all();
-    return view('user.index-simple',compact('users'));
-})->name('user.index-simple');
+    $userInputs = (new UserSchema())->userInputs();
+    return view('user.index-simple',compact('users','userInputs'));
+
+}) -> name ('user.index-simple');
 
