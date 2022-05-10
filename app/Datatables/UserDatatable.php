@@ -8,8 +8,10 @@
 
 namespace App\Datatables;
 
+use App\Http\Schemas\UserSchema;
 use App\Models\User;
 use Yajra\DataTables\Services\DataTable;
+use function Spatie\Ignition\ErrorPage\title;
 
 class UserDatatable extends DataTable
 {
@@ -22,28 +24,29 @@ class UserDatatable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('id', function($row){
-                return $row->id;
-            })
-            ->editColumn('firstname', function($row){
-                return $row->first_name;
-            })
-            ->editColumn('email', function($row){
-                return $row->email;
-            })
-            ->editColumn('mobile', function($row){
-                return $row->mobile;
-            })
-            ->editColumn('user_type', function($row){
-                return $row->user_type ==1 ? 'ادمین' : 'مشتری';
-            })
-            ->editColumn('activation', function($row){
-                return $row->activation ==1 ? 'فعال' : 'مسدود';
-            })
-            ->editColumn('configuration', function($row){
-                return
-                    '<a class="fa fa-edit text-navy dt-btn action-loader"  title="'.trans('letter.edit').'" style="color: #1c84c6" href='.route('user.edit', ['id' => $row->id]).'></a>';
-            })
+//            ->editColumn('id', function($row){
+//                return $row->id;
+//            })
+
+//            ->editColumn('firstname', function($row){
+//                return $row->first_name;
+//            })
+//            ->editColumn('email', function($row){
+//                return $row->email;
+//            })
+//            ->editColumn('mobile', function($row){
+//                return $row->mobile;
+//            })
+//            ->editColumn('user_type', function($row){
+//                return $row->user_type ==1 ? 'ادمین' : 'مشتری';
+//            })
+//            ->editColumn('activation', function($row){
+//                return $row->activation ==1 ? 'فعال' : 'مسدود';
+//            })
+//            ->editColumn('configuration', function($row){
+//                return
+//                    '<a class="fa fa-edit text-navy dt-btn action-loader"  title="'.trans('letter.edit').'" style="color: #1c84c6" href='.route('user.edit', ['id' => $row->id]).'></a>';
+//            })
             ->rawColumns(['configuration'])
             ;
     }
@@ -110,14 +113,17 @@ class UserDatatable extends DataTable
 
     protected function getColumns()
     {
-        return [
-            'id'                => ['title' => trans('letter.user_id'), 'searchable' => true],
-            'first_name'        => ['title' => trans('letter.full_name')],
-            'email'             => ['title' => trans('letter.email'),],
-            'mobile'            => ['title' => trans('letter.mobile'),],
-            'national_code'     => ['title' => trans('letter.national_code'),],
-            'user_type'         => ['title' => trans('letter.user_type'),],
-        ];
+        $userInputs = (new UserSchema())->userInputs();
+        $defaultArray = ['id' => ['title' => trans('letter.user_id'), 'searchable' => true],];
+        $userInputsName = [];
+        foreach ($userInputs as $input)
+        {
+            isset($input['show_index']) && $input['show_index'] ? $userInputsName [] =   $input['name'] : null;
+        }
+        $userInputsName[$input['name']]['title']  = trans('letter.'.$input['name']);
+        $userInputsName[$input['name']]['searchable']  = isset($input['searchable']) && $input['searchable'] ? $input['searchable'] :  null;
+        unset($userInputsName[null]);
+        return array_merge($defaultArray,$userInputsName);
     }
 
     /**

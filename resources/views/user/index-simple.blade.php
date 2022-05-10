@@ -29,7 +29,7 @@
                         <tr>
                             <th>#</th>
                             @foreach( $userInputs as $input)
-                                @if(isset($input['show-index']) && $input['show-index'])
+                                @if(isset($input['show_index']) && $input['show_index'])
                                     <th>{{ trans('letter.'.$input['name']) }} </th>
                                 @endif
                             @endforeach
@@ -43,7 +43,7 @@
                                 <th> {{ $user -> id  }} </th>
 {{--                                <th> {{ $user -> full_name ? $user -> full_name : null }} </th>--}}
                                 @foreach( $userInputs as $input)
-                                    @if(isset($input['show-index']) && $input['show-index'])
+                                    @if(isset($input['show_index']) && $input['show_index'])
                                         <th>{{ isset($user->data[$input['name']]) ? $user->data[$input['name']] : '' }} </th>
                                     @endif
                                 @endforeach
