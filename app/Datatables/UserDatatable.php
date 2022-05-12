@@ -11,26 +11,33 @@ namespace App\Datatables;
 use App\Http\Schemas\UserSchema;
 use App\Models\User;
 use Yajra\DataTables\Services\DataTable;
-use function Spatie\Ignition\ErrorPage\title;
 
 class UserDatatable extends DataTable
 {
+
+    /**
+     * Get query source of dataTable.
+     *
+     * @param \App\Models\User $users
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function query(User $users)
+    {
+        return $users->orderBy('id', 'desc');
+    }
     /**
      * Build DataTable class.
      *
-     * @param mixed $query Results from query() method.
+     * @param mixed $users Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    public function dataTable($query)
+    public function dataTable($users)
     {
-        return datatables($query)
-//            ->editColumn('id', function($row){
-//                return $row->id;
-//            })
+        return dataTables($users)
+            ->editColumn('id', function($row){
+                return $row->first()->id;
+            })
 
-//            ->editColumn('firstname', function($row){
-//                return $row->first_name;
-//            })
 //            ->editColumn('email', function($row){
 //                return $row->email;
 //            })
@@ -47,19 +54,8 @@ class UserDatatable extends DataTable
 //                return
 //                    '<a class="fa fa-edit text-navy dt-btn action-loader"  title="'.trans('letter.edit').'" style="color: #1c84c6" href='.route('user.edit', ['id' => $row->id]).'></a>';
 //            })
-            ->rawColumns(['configuration'])
+//            ->rawColumns(['configuration'],true)
             ;
-    }
-    /**
-     * Get query source of dataTable.
-     *
-     * @param \App\Models\User $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function query(User $query)
-    {
-        return $query;
-
     }
 
     /**
@@ -70,38 +66,12 @@ class UserDatatable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->columns($this->getColumns())
-                    ->addAction(['title' => trans('letter.configuration')])
-                    ->parameters($this->getBuilderParameters());
-    }
-
-    protected function getBuilderParameters()
-    {
-        return [
-            'dom' => 'frtip',
-            'scrollX' => false,
-            //'buttons' => [],
-            'pageLength' => 10,
-            //'order' => [[5, 'desc']],
-            //'responsive' => true,
-            'language' => [
-                "sProcessing" => "درحال پردازش...",
-                "sLengthMenu" => "نمایش محتویات _MENU_",
-                "sZeroRecords" => "موردی یافت نشد",
-                "sInfo" => "نمایش _START_ تا _END_ از مجموع _TOTAL_ مورد",
-                "sInfoEmpty" => "تهی",
-                "sInfoFiltered" => "(فیلتر شده از مجموع _MAX_ مورد)",
-                "sInfoPostFix" => "",
-                "sSearch" => "Search:",
-                "sUrl" => "",
-                "oPaginate" => [
-                    "sFirst" => "ابتدا",
-                    "sPrevious" => "قبلی",
-                    "sNext" => "بعدی",
-                    "sLast" => "انتها"
-                ]
-            ]
-        ];
+            ->columns($this->getColumns())
+//            ->addAction(['id'],1)
+//            ->addAction(['title' => trans('letter.user_id')],1)
+//            ->addAction(['title' => trans('letter.configuration')])
+//            ->parameters($this->getBuilderParameters())
+            ;
     }
 
     /**
@@ -109,12 +79,10 @@ class UserDatatable extends DataTable
      *
      * @return array
      */
-
-
     protected function getColumns()
     {
+        return ['id'];
         $userInputs = (new UserSchema())->userInputs();
-        $defaultArray = ['id' => ['title' => trans('letter.user_id'), 'searchable' => true],];
         $userInputsName = [];
         foreach ($userInputs as $input)
         {
@@ -123,7 +91,8 @@ class UserDatatable extends DataTable
         $userInputsName[$input['name']]['title']  = trans('letter.'.$input['name']);
         $userInputsName[$input['name']]['searchable']  = isset($input['searchable']) && $input['searchable'] ? $input['searchable'] :  null;
         unset($userInputsName[null]);
-        return array_merge($defaultArray,$userInputsName);
+        return $userInputsName;
+//        return ['id' => ['title' => 'شناسه کاربر', 'searchable' => false]];
     }
 
     /**
@@ -134,5 +103,34 @@ class UserDatatable extends DataTable
     protected function filename()
     {
         return 'Users_' . date('YmdHis');
+    }
+
+    protected function getBuilderParameters()
+    {
+        return [
+//            'dom' => 'frtip',
+//            'scrollX' => false,
+            //'buttons' => [],
+//            'pageLength' => 10,
+            //'order' => [[5, 'desc']],
+            //'responsive' => true,
+//            'language' => [
+//                "sProcessing" => "درحال پردازش...",
+//                "sLengthMenu" => "نمایش محتویات _MENU_",
+//                "sZeroRecords" => "موردی یافت نشد",
+//                "sInfo" => "نمایش _START_ تا _END_ از مجموع _TOTAL_ مورد",
+//                "sInfoEmpty" => "تهی",
+//                "sInfoFiltered" => "(فیلتر شده از مجموع _MAX_ مورد)",
+//                "sInfoPostFix" => "",
+//                "sSearch" => "Search:",
+//                "sUrl" => "",
+//                "oPaginate" => [
+//                    "sFirst" => "ابتدا",
+//                    "sPrevious" => "قبلی",
+//                    "sNext" => "بعدی",
+//                    "sLast" => "انتها"
+//                ]
+//            ]
+        ];
     }
 }

@@ -184,6 +184,9 @@ return [
 
 
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
+
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
     ],
 
     /*

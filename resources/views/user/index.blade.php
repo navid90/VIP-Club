@@ -30,9 +30,9 @@
 
                                 <a class="btn btn-success pull-right btn-xs" href="?action=excel" style="margin-left:5px;"><i class="fa fa-file-excel-o"></i> {{ trans('letter.excel') }} </a>
 
-                                {{ $dataTable->table() }}
-                                <table class="dataTableBuilder" id="dataTableBuilder - Ajax"></table>
-
+{{--                                <table class="table" id="dataTableBuilder - Ajax"></table>--}}
+                                {{$dataTable->table()}}
+{{--                                {{dd($dataTable->scripts())}}--}}
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,5 @@
 @endsection
 
 @push('js')
-
     {{$dataTable->scripts()}}
-
 @endpush

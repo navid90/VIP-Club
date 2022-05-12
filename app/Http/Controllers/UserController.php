@@ -23,12 +23,14 @@ class UserController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     *
      */
-    public function index(\Yajra\DataTables\Utilities\Request $request)
+
+    public function index( Request $request)
     {
-        $datatable = new UserDatatable();
-        $users = User::all();
-        return $datatable->render('user.index',$users);
+        $model = User::all();
+        $datatable = app(UserDatatable::class);
+        return $datatable->render('user.index',$model);
     }
 
     /**
@@ -46,7 +48,6 @@ class UserController extends Controller
         );
 
         return view('user.create', compact('form'));
-
     }
 
     /**
