@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 
+
 @section('title', 'Dashboard')
 
 @section('adminlte_css')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Student;
+use Illuminate\Support\Facades\DB;
 use Kris\LaravelFormBuilder\FormBuilder;
 use App\Datatables\UserDatatable;
 use App\Http\Requests\UserRequest;
@@ -26,6 +27,7 @@ class UserController extends Controller
     public function index()
     {
         $users=User::all();
+
         $userInputs = (new UserSchema())->userInputs();
         return view('user.index',compact('users','userInputs'));
     }
@@ -51,20 +53,45 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return string
+     * @return User
      */
     public function store(UserRequest $request)
     {
-//        $request->validate([
-//            'email'         => ['unique:users',],
-//        ]);
-
+        //Getting whole of the request information
         $data= $request->all();
-        $data['password'] = Hash::make($data['password']);
-        unset($data['password_confirmation']);
+
+        //Creating a model instance of the user
         $user = new User();
-        $user['data'] = $data;
+
+        //Creating a model instance of the userInputs from UserSchema
+        $userInputs= (new UserSchema()) -> userInputs();
+
+        //unsetting the 'password_confirmation' value from the request
+        unset($data['password_confirmation']);
+
+        //Changing the password value to a hash value
+        $data['password'] = Hash::make($data['password']);
+
+        //unsetting the whole inputs from the request which has to insert by json data
+        foreach ($userInputs as $userInput)
+        {
+            if (isset($userInput['data']) && $userInput['data'] = 'json')
+            {
+                unset($data[$userInput['name']]);
+            }
+        }
+
+        foreach ($userInputs as $userInput)
+        {
+            if (isset($userInput['insert']) && $userInput['insert'] && !$userInput['data']=='json')
+            {
+                $user[$userInput['name']] = $data[$userInput['name']];
+            }
+        }
+
+        $user['data'] = ($request->all())['data'];
         $user->save();
+
         return redirect()->route( 'user.index');
     }
 

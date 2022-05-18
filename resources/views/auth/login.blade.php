@@ -1,4 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.page')
+
+@section('head-tag')
+
+    <title> {{ trans('title.user.login') }} </title>
+
+@endsection
 
 @section('content')
 <div class="container">
@@ -70,4 +76,7 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
 @endsection

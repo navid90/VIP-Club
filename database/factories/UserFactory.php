@@ -20,26 +20,28 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $userFactory=[
-            'email'              => $this->faker->unique()->safeEmail(),
-            'mobile'             => $this->faker->unique()->phoneNumber(),
-//            'password'           => Hash::make('customer-club'),
+        $jsonUserFactory=[
+
             'national_code'      => rand(1000000000,9999999999),
-            'first_name'         => $this->faker->firstName(),
-            'last_name'          => $this->faker->lastName(),
+            'mobile'             => $this->faker->unique()->phoneNumber(),
             'slug'               => $this->faker->slug(6),
-//            'profile_photo_path' => $this->faker->filePath(),
+            'profile_photo_path' => $this->faker->filePath(),
             'email_verified_at'  => now(),
             'activation'         => rand(0,1),
-            'activation_date'    => now(),
             'user_type'          => rand(0,1),
-//            'remember_token' => Str::random(10),
+            'status'             => rand(0,3),
+            'age'                => $this->faker->date('Y-m-d',now()),
         ];
 
-        $jsonUserFactory = $userFactory;
-
         return [
-            'data' => $jsonUserFactory,
+            'first_name'            => $this->faker->firstName(),
+            'last_name'             => $this->faker->lastName(),
+            'email'                 => $this->faker->unique()->safeEmail(),
+            'password'              => Hash::make('customer-club'),
+            'data'                  => $jsonUserFactory,
+            'email_verified_at'     => now(),
+            'user_activated_at'     => now(),
+            'remember_token'        => Str::random(10),
         ];
     }
 

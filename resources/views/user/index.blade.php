@@ -41,14 +41,20 @@
                         @foreach($users as $user)
                             <tr>
                                 <th> {{ $user -> id  }} </th>
-{{--                                <th> {{ $user -> full_name ? $user -> full_name : null }} </th>--}}
                                 @foreach( $userInputs as $input)
                                     @if(isset($input['show_index']) && $input['show_index'])
-                                        <th>{{ isset($user->data[$input['name']]) ? $user->data[$input['name']] : '' }} </th>
+                                        @if(isset($input['data']) && $input['data'] = 'json')
+                                            @if(isset($input['choices']))
+                                                <th>{{ $user[$input['name'].'_in_letter'] }} </th>
+                                            @else
+                                                <th>{{ $user->data[$input['name']] }} </th>
+                                            @endif
+                                        @else
+                                            <th>{{ $user[$input['name']] }} </th>
+                                        @endif
                                     @endif
                                 @endforeach
-{{--                                <th> {{ $user -> user_type_in_letter }} </th>--}}
-{{--                                <th> {{ $user -> activation_in_letter }} </th>--}}
+
 
                                 <td class="width-22-rem text-left">
 

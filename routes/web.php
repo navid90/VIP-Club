@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-//Route::get('/home', 'HomeController@index')->name('home.index');
+Route::get('/home-logout', [HomeController::class, 'home_logout'])->name('home.logout');
 
 Route::resources([
     'home' => HomeController::class,

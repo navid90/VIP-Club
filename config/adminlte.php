@@ -236,6 +236,7 @@ return [
             'topnav_right' => true,
         ],
 
+
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
@@ -261,13 +262,13 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'change_password',
+            'text' => 'Reset Password',
             'url'  => '/password/reset',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
             'text' => 'logout',
-            'url'  => 'logout',
+            'url'  => '/home-logout',
             'icon' => 'fas fa-fw fa-key',
         ],
         [
@@ -384,7 +385,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',

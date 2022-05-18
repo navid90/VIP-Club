@@ -1,4 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.page')
+
+@section('head-tag')
+
+    <title> {{ trans('title.user.email-password') }} </title>
+
+@endsection
 
 @section('content')
 <div class="container">
