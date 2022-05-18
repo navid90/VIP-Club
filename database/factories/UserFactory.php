@@ -36,7 +36,7 @@ class UserFactory extends Factory
 //            'remember_token' => Str::random(10),
         ];
 
-        $jsonUserFactory = json_encode($userFactory);
+        $jsonUserFactory = $userFactory;
 
         return [
             'data' => $jsonUserFactory,

@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-//            $table->string('email')->unique()->nullable();
-//            $table->string('mobile')->unique()->nullable();
-//            $table->string('password');
-//            $table->string('national_code')->unique()->nullable();
 //            $table->string('first_name')->nullable();
 //            $table->string('last_name')->nullable();
+//            $table->string('email')->unique()->nullable();
+//            $table->string('password');
+//            $table->string('password-confirmation');
+
+//            $table->string('national_code')->unique()->nullable();
+//            $table->string('mobile')->unique()->nullable();
 //            $table->string('slug')->unique()->nullable();
 //            $table->text('profile_photo_path')->nullable()->comment('avatar');
 //            $table->timestamp('email_verified_at')->nullable();
@@ -28,6 +30,7 @@ return new class extends Migration
 //            $table->timestamp('activation_date')->nullable();
 //            $table->tinyInteger('user_type')->default(0)->comment('0 => customer, 1 => admin');
 //            $table->tinyInteger('status')->default(0);
+
             $table->json('data');
             $table->rememberToken();
             $table->timestamps();

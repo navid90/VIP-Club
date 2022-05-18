@@ -27,6 +27,10 @@ class UserForm extends Form
             {
                 $userInput['attr'] = [ 'class' =>'form-control form-control-sm col-12 col-md-6 offset-md-2',];
             }
+//            if ($this->request)
+//            {
+//                $userInput['value'] = 13;
+//            }
             $this->add($userInput['name'], $userInput['type'] , $userInput, );
         }
     }

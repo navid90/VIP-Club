@@ -13,6 +13,7 @@
     </ol>
   </nav>
 
+
   <section class="row">
     <section class="col-10 offset-1">
         <section class="main-body-container">
@@ -23,21 +24,47 @@
 
             <section class="table-responsive">
 
-                @if($dataTable)
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-content">
-                            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            @foreach( $userInputs as $input)
+                                @if(isset($input['show_index']) && $input['show_index'])
+                                    <th> {{ trans('letter.'.$input['name']) }} </th>
+                                @endif
+                            @endforeach
+                            <th><i class="fa fa-cogs"></i> Configuration </th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                                <a class="btn btn-success pull-right btn-xs" href="?action=excel" style="margin-left:5px;"><i class="fa fa-file-excel-o"></i> {{ trans('letter.excel') }} </a>
+                        @foreach($users as $user)
+                            <tr>
+                                <th> {{ $user -> id  }} </th>
+{{--                                <th> {{ $user -> full_name ? $user -> full_name : null }} </th>--}}
+                                @foreach( $userInputs as $input)
+                                    @if(isset($input['show_index']) && $input['show_index'])
+                                        <th>{{ isset($user->data[$input['name']]) ? $user->data[$input['name']] : '' }} </th>
+                                    @endif
+                                @endforeach
+{{--                                <th> {{ $user -> user_type_in_letter }} </th>--}}
+{{--                                <th> {{ $user -> activation_in_letter }} </th>--}}
 
-{{--                                <table class="table" id="dataTableBuilder - Ajax"></table>--}}
-                                {{$dataTable->table()}}
-{{--                                {{dd($dataTable->scripts())}}--}}
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                                <td class="width-22-rem text-left">
 
+                                    <a href="{{ route( 'user.edit' , $user -> id ) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> {{ trans('letter.edit') }} </a>
+
+                                    <form class="d-inline" id="destroy_user_form" action="{{ route( 'user.destroy' ,$user -> id ) }}" enctype="multipart/form-data" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="submit" value="{{ trans('recycle') }}" class="btn btn-danger btn-sm">
+                                    </form>
+
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </section>
         </section>
     </section>
@@ -46,5 +73,5 @@
 @endsection
 
 @push('js')
-    {{$dataTable->scripts()}}
+
 @endpush

@@ -1,36 +1,33 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Schemas\UserSchema;
+use App\Models\Student;
 use Kris\LaravelFormBuilder\FormBuilder;
-use phpDocumentor\Reflection\DocBlock\Tags\Uses;
-use Yajra\DataTables\DataTablesServiceProvider;
 use App\Datatables\UserDatatable;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
-use Yajra\DataTables\DataTables;
-use function PHPUnit\Framework\assertJson;
-use function PHPUnit\Framework\stringContains;
 use App\Http\Forms\UserForm;
+use App\Http\Schemas\UserSchema;
+use Yajra\DataTables\Facades\DataTables;
 use function Spatie\Ignition\Config\toArray;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param Request $request
+     * @param UserDatatable $datatable
+     * @return \Illuminate\Http\JsonResponse|mixed
      *
      */
 
-    public function index( Request $request)
+    public function index()
     {
-        $model = User::all();
-        $datatable = app(UserDatatable::class);
-        return $datatable->render('user.index',$model);
+        $users=User::all();
+        $userInputs = (new UserSchema())->userInputs();
+        return view('user.index',compact('users','userInputs'));
     }
 
     /**
@@ -40,11 +37,11 @@ class UserController extends Controller
      */
     public function create(FormBuilder $formBuilder)
     {
-        $form = $formBuilder->create(UserForm::class,
+        $form = $formBuilder->create(UserForm :: class ,
             [
                 'method' => 'POST',
                 'url' => route('user.store'),
-            ]
+            ] ,
         );
 
         return view('user.create', compact('form'));
@@ -68,7 +65,7 @@ class UserController extends Controller
         $user = new User();
         $user['data'] = $data;
         $user->save();
-        return redirect()->route( 'user.index-simple');
+        return redirect()->route( 'user.index');
     }
 
     /**
@@ -90,10 +87,21 @@ class UserController extends Controller
      */
     public function edit(FormBuilder $formBuilder ,$id)
     {
-        $result = IndustryType::findOrFail($id);
-        $form = $formBuilder->create('employment_bank\\Forms\\IndustryTypeForm', ['method' => 'PUT', 'model' => $result, 'url' => route($this->route . 'update', $id)])->remove('save');
-        //->setData('market_values', $markets);
-        return view($this->content . 'edit', compact('form'));
+        $form = $formBuilder->create(UserForm::class,
+            [
+                'method' => 'PUT',
+                'url' => route('user.update',$id),
+            ]
+        );
+        $user = User::all()->find($id);
+        return view('user.edit', compact('form','user'));
+
+
+
+//        $result = IndustryType::findOrFail($id);
+//        $form = $formBuilder->create('employment_bank\\Forms\\IndustryTypeForm', ['method' => 'PUT', 'model' => $result, 'url' => route($this->route . 'update', $id)])->remove('save');
+//        //->setData('market_values', $markets);
+//        return view($this->content . 'edit', compact('form'));
 
 //        $form = $formBuilder->create(UserForm::class,
 //            [
@@ -170,4 +178,30 @@ class UserController extends Controller
 
         return back();
     }
+
+    public function userDatatable()
+    {
+        return view('user.user-datatable');
+    }
+
+    public function getUsers(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = User::latest()->get();
+            return \Yajra\DataTables\DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    public function index_datatable(UserDatatable $datatable)
+    {
+        return $datatable->render('user.index-datatable');
+    }
+
 }

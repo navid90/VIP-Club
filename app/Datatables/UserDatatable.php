@@ -14,47 +14,33 @@ use Yajra\DataTables\Services\DataTable;
 
 class UserDatatable extends DataTable
 {
-
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\User $users
+     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $users)
+    public function model(User $model)
     {
-        return $users->orderBy('id', 'desc');
+        return $model->orderBy('id', 'desc');
     }
     /**
-     * Build DataTable class.
+     * * Build DataTable class.
      *
-     * @param mixed $users Results from query() method.
+     * @param mixed $model Results from model() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    public function dataTable($users)
+    public function dataTable($model)
     {
-        return dataTables($users)
-            ->editColumn('id', function($row){
-                return $row->first()->id;
-            })
 
-//            ->editColumn('email', function($row){
-//                return $row->email;
-//            })
-//            ->editColumn('mobile', function($row){
-//                return $row->mobile;
-//            })
-//            ->editColumn('user_type', function($row){
-//                return $row->user_type ==1 ? 'ادمین' : 'مشتری';
-//            })
-//            ->editColumn('activation', function($row){
-//                return $row->activation ==1 ? 'فعال' : 'مسدود';
-//            })
-//            ->editColumn('configuration', function($row){
-//                return
-//                    '<a class="fa fa-edit text-navy dt-btn action-loader"  title="'.trans('letter.edit').'" style="color: #1c84c6" href='.route('user.edit', ['id' => $row->id]).'></a>';
-//            })
-//            ->rawColumns(['configuration'],true)
+        return datatables($model) ->editColumn('id', function($row){
+            return $row['id'];
+        })
+            ->editColumn('action', function($row){
+                return
+                    '<a class="fa fa-edit text-navy dt-btn action-loader"  title="'.trans('letter.edit').'" style="color: #1c84c6" href='.route('users.edit', ['id' => $row->id]).'></a>';
+            })
+            ->rawColumns(['action'])
             ;
     }
 
@@ -81,7 +67,6 @@ class UserDatatable extends DataTable
      */
     protected function getColumns()
     {
-        return ['id'];
         $userInputs = (new UserSchema())->userInputs();
         $userInputsName = [];
         foreach ($userInputs as $input)
@@ -92,7 +77,7 @@ class UserDatatable extends DataTable
         $userInputsName[$input['name']]['searchable']  = isset($input['searchable']) && $input['searchable'] ? $input['searchable'] :  null;
         unset($userInputsName[null]);
         return $userInputsName;
-//        return ['id' => ['title' => 'شناسه کاربر', 'searchable' => false]];
+//        return ['id'];
     }
 
     /**
@@ -100,14 +85,11 @@ class UserDatatable extends DataTable
      *
      * @return string
      */
-    protected function filename()
-    {
-        return 'Users_' . date('YmdHis');
-    }
 
-    protected function getBuilderParameters()
-    {
-        return [
+
+//    protected function getBuilderParameters()
+//    {
+//        return [
 //            'dom' => 'frtip',
 //            'scrollX' => false,
             //'buttons' => [],
@@ -131,6 +113,6 @@ class UserDatatable extends DataTable
 //                    "sLast" => "انتها"
 //                ]
 //            ]
-        ];
-    }
+//        ];
+//    }
 }

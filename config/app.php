@@ -179,14 +179,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
         AdminLteServiceProvider::class,
-
-
         Kris\LaravelFormBuilder\FormBuilderServiceProvider::class,
+	    Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\HtmlServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class
 
-        Yajra\DataTables\DataTablesServiceProvider::class,
-        Yajra\DataTables\ButtonsServiceProvider::class,
     ],
 
     /*
@@ -202,8 +200,10 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // ...,
-        'DataTables' => oracle\src\Facades\DataTables::class,
-        'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class
+        'FormBuilder' => Kris\LaravelFormBuilder\Facades\FormBuilder::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+
+
     ])->toArray(),
 
 ];

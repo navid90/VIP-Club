@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MemberController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Schemas\UserSchema;
@@ -23,17 +23,19 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+//Route::get('/home', 'HomeController@index')->name('home.index');
 
 Route::resources([
     'home' => HomeController::class,
     'user' => UserController::class,
 ]);
 
-Route::get('user-simple',function (){
 
-    $users=User::all();
-    $userInputs = (new UserSchema())->userInputs();
-    return view('user.index-simple',compact('users','userInputs'));
+Route::get('user-datatable', [UserController::class, 'index_datatable'])->name('users.datatable');
 
-}) -> name ('user.index-simple');
+
+
+Route::get('students', [StudentController::class, 'index']);
+Route::get('students/list', [StudentController::class, 'getStudents'])->name('students.list');
+
 
