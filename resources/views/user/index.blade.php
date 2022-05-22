@@ -28,12 +28,17 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            @foreach( $userInputs as $input)
-                                @if(isset($input['show_index']) && $input['show_index'])
-                                    <th> {{ trans('letter.'.$input['name']) }} </th>
+                            @foreach( $userColumns as $userColumn)
+                                @if(isset($userColumn['show_index']) && $userColumn['show_index'])
+                                    <th> {{ trans('letter.'.$userColumn['name']) }} </th>
                                 @endif
                             @endforeach
-                            <th><i class="fa fa-cogs"></i> Configuration </th>
+                            @foreach( $userDataSet as $userData)
+                                @if(isset($userData['show_index']) && $userData['show_index'])
+                                    <th> {{ trans('letter.'.$userData['name']) }} </th>
+                                @endif
+                            @endforeach
+                            <th><i class="fa fa-cogs"></i> {{trans('letter.configuration')}} </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,16 +46,18 @@
                         @foreach($users as $user)
                             <tr>
                                 <th> {{ $user -> id  }} </th>
-                                @foreach( $userInputs as $input)
-                                    @if(isset($input['show_index']) && $input['show_index'])
-                                        @if(isset($input['data']) && $input['data'] = 'json')
-                                            @if(isset($input['choices']))
-                                                <th>{{ $user[$input['name'].'_in_letter'] }} </th>
-                                            @else
-                                                <th>{{ $user->data[$input['name']] }} </th>
-                                            @endif
+                                @foreach( $userColumns as $userColumn)
+                                    @if(isset($userColumn['show_index']) && $userColumn['show_index'])
+                                        <th>{{ $user[$userColumn['name']] }} </th>
+                                    @endif
+                                @endforeach
+
+                                @foreach( $userDataSet as $userData)
+                                    @if(isset( $userData['show_index'] ) && $userData['show_index'] )
+                                        @if(isset($userData['choices']))
+                                            <th>{{ $user[$userData['name'].'_in_letter'] }} </th>
                                         @else
-                                            <th>{{ $user[$input['name']] }} </th>
+                                            <th>{{ $user->data[$userData['name']] }} </th>
                                         @endif
                                     @endif
                                 @endforeach

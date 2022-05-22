@@ -5,9 +5,11 @@ namespace App\Http\Forms;
 use App\Http\Schemas\UserSchema;
 use Illuminate\Validation\Rules\Password;
 use Kris\LaravelFormBuilder\Form;
+use PhpParser\Node\Expr\BinaryOp\Concat;
 
 class UserForm extends Form
 {
+
     public function buildForm()
     {
 
@@ -16,9 +18,9 @@ class UserForm extends Form
          *
          */
 
-        $userHelper = new UserSchema();
-
-        $userInputs= $userHelper -> userInputs();
+        $userColumns = (new UserSchema()) -> userColumns();
+        $userDataSet = (new UserSchema()) -> userDataSet();
+        $userInputs = array_merge($userColumns,$userDataSet);
 
         foreach ($userInputs as $userInput)
         {
@@ -27,10 +29,7 @@ class UserForm extends Form
             {
                 $userInput['attr'] = [ 'class' =>'form-control form-control-sm col-12 col-md-6 offset-md-2',];
             }
-//            if ($this->request)
-//            {
-//                $userInput['value'] = 13;
-//            }
+
             $this->add($userInput['name'], $userInput['type'] , $userInput, );
         }
     }

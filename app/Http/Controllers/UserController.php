@@ -28,8 +28,9 @@ class UserController extends Controller
     {
         $users=User::all();
 
-        $userInputs = (new UserSchema())->userInputs();
-        return view('user.index',compact('users','userInputs'));
+        $userColumns = (new UserSchema())->userColumns();
+        $userDataSet = (new UserSchema())->userDataSet();
+        return view('user.index',compact('users','userColumns' , 'userDataSet'));
     }
 
     /**
@@ -114,14 +115,14 @@ class UserController extends Controller
      */
     public function edit(FormBuilder $formBuilder ,$id)
     {
+        $user = User::find($id);
         $form = $formBuilder->create(UserForm::class,
             [
                 'method' => 'PUT',
                 'url' => route('user.update',$id),
-            ]
+            ],
         );
-        $user = User::all()->find($id);
-        return view('user.edit', compact('form','user'));
+        return view('user.edit', compact('form'));
 
 
 
